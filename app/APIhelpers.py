@@ -72,7 +72,7 @@ def get_list_id(token, playlist_name):
             return list_id
 
 
-def get_song(token, genre, offset, min_tempo, max_tempo):
+def get_song(token, genre, offset, tempo):
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -96,14 +96,14 @@ def get_song(token, genre, offset, min_tempo, max_tempo):
 
     song_id_str = ','.join(song_ids)    
 
-    tempo_matched_songs = song_info(token, song_id_str, min_tempo, max_tempo)
+    tempo_matched_songs = song_info(token, song_id_str, tempo)
 
     for song in tempo_matched_songs:    
         songs.append(song)
 
     return songs
 
-def song_info(token, song_id_str, min_tempo, max_tempo):
+def song_info(token, song_id_str, tempo):
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -114,8 +114,12 @@ def song_info(token, song_id_str, min_tempo, max_tempo):
     info = (json.loads(response.text))
     song_ids = []
 
+    # for song in info['audio_features']:
+    #     if min_tempo < float(song['tempo']) < max_tempo or ((min_tempo*2) < float(song['tempo']) < (max_tempo*2)):
+    #         song_ids.append(song['id'])
+
     for song in info['audio_features']:
-        if min_tempo < float(song['tempo']) < max_tempo or ((min_tempo*2) < float(song['tempo']) < (max_tempo*2)):
+        if tempo - 2 < float(song['tempo']) < tempo + 2 or (tempo * 2 - 2) < float(song['tempo']) < (tempo * 2 - 2) or (tempo / 2 - 2) < float(song['tempo']) < (tempo / 2 + 2):
             song_ids.append(song['id'])
 
     return song_ids
@@ -144,33 +148,33 @@ def send_songs(token, songs, list_id):
 
 
 
-# def get_song(token, artist, offset, min_tempo, max_tempo):
-#     headers = {
-#         'Accept': 'application/json',
-#         'Content-Type': 'application/json',
-#         'Authorization': f'Bearer {token}',
-#     }
+def get_song_artist(token, artist, offset, tempo):
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}',
+    }
 
-#     params = {
-#         'q': f'artist:{artist}',
-#         'type': 'track',
-#         'limit': '50',
-#         'offset': f'{offset}'
-#     }
+    params = {
+        'q': f'artist:{artist}',
+        'type': 'track',
+        'limit': '50',
+        'offset': f'{offset}'
+    }
 
-#     response = requests.get('https://api.spotify.com/v1/search', params=params, headers=headers)
-#     tracks = (json.loads(response.text))
+    response = requests.get('https://api.spotify.com/v1/search', params=params, headers=headers)
+    tracks = (json.loads(response.text))
 
-#     songs = []
-#     song_ids = []
-#     for track in tracks['tracks']['items']:
-#         song_ids.append(track['id'])
+    songs = []
+    song_ids = []
+    for track in tracks['tracks']['items']:
+        song_ids.append(track['id'])
 
-#     song_id_str = ','.join(song_ids)    
+    song_id_str = ','.join(song_ids)    
 
-#     tempo_matched_songs = song_info(token, song_id_str, min_tempo, max_tempo)
+    tempo_matched_songs = song_info(token, song_id_str, tempo)
 
-#     for song in tempo_matched_songs:    
-#         songs.append(song)
+    for song in tempo_matched_songs:    
+        songs.append(song)
 
-#     return songs
+    return songs

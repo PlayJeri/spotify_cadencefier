@@ -19,20 +19,27 @@
     </div>
     <div class="row py-2 justify-content-center">
         <div class="col-3">
+            {% for subfield in form.genre_or_artist %}
+            <tr>
+                <td>{{ subfield(class="form-check-input", type="radio") }}</td>
+                <td>{{ subfield.label(class="form-check-label") }}</td>
+            </tr>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row py-2 justify-content-center">
+        <div class="col-3">
             {{ form.genre.label(class="form-label") }}
             {{ form.genre(class="form-control")}}
         </div>
     </div>
     <div class="row py-2 justify-content-center">
         <div class="col-3">
-            {{ form.tempo_min.label(class="form.label")}}
-            {{ form.tempo_min(class="form-control")}}
-        </div>
-    </div>
-    <div class="row py-2 justify-content-center">
-        <div class="col-3">
-            {{ form.tempo_max.label(class="form.label")}}
-            {{ form.tempo_max(class="form-control")}}
+            <p>
+                {{ form.tempo.label(class="form.label")}}
+                {{ form.tempo(class="form-range", value=115, min=70, max=160, step=1, oninput="outputUpdate(value)")}}
+                <output for="tempo" id="selected-tempo">{{ form.tempo.data }}</output>
+            </p>
         </div>
     </div>
     <div class="row py-3 justify-content-center">
@@ -42,5 +49,9 @@
     </div>
 </div>
 </form>
-
+<script>
+    function outputUpdate(value) {
+        document.querySelector('#selected-tempo').value = value;
+    }
+</script>
 {% endblock %}

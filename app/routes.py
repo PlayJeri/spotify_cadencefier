@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from dotenv import load_dotenv
 import json, os
 
-from .APIhelpers import get_list_id, get_song, get_token, get_username, create_list, send_songs
+from .APIhelpers import get_list_id, get_song, get_token, get_username, create_list, send_songs, get_song_artist
 from .forms import PlayListForm
 
 load_dotenv()
@@ -57,8 +57,8 @@ def playlist():
   if form.validate_on_submit():
     playlist_name = form.playlist_name.data
     genre = form.genre.data
-    min_tempo = form.tempo_min.data
-    max_tempo = form.tempo_max.data
+    tempo = form.tempo.data
+    genre_or_artist = form.genre_or_artist.data
     create_list(token, playlist_name, username)
 
     list_id = get_list_id(token, playlist_name)
@@ -67,14 +67,21 @@ def playlist():
     songs = []
     number_of_songs = 0
 
-    while offset < 250:
+    while offset < 500:
     # while number_of_songs < 30:
-      song_ids = get_song(token, genre, offset, min_tempo, max_tempo)
-      songs.append(song_ids)
-      offset += 50
-      number_of_songs += len(song_ids)
-      print(number_of_songs)
-
+      print(genre_or_artist)
+      print(genre)
+      try:
+        if genre_or_artist == "Artist":
+          song_ids = get_song_artist(token, genre, offset, tempo)
+        elif genre_or_artist == "Genre":
+          song_ids = get_song(token, genre, offset, tempo)
+        songs.append(song_ids)
+        offset += 50
+        number_of_songs += len(song_ids)
+        print(number_of_songs)
+      except:
+        print("ERROR")
     send_songs(token, songs, list_id)
 
   return render_template('playlist.html', form=form)
