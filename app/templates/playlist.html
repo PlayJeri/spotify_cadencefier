@@ -20,6 +20,11 @@
     </div>
     <div class="row py-2 justify-content-center">
         <div class="col-lg-3 col-md-6 col-12 text-center">
+            {{ form.genre_or_artist.label.text }}
+        </div>
+    </div>
+    <div class="row py-2 justify-content-center">
+        <div class="col-lg-3 col-md-6 col-12 text-center">
             {% for subfield in form.genre_or_artist %}
             <tr>
                 <td>{{ subfield(class="form-check-input bg-success-subtle border-success", type="radio") }}</td>
