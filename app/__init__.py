@@ -1,14 +1,15 @@
 from flask import Flask
-import os
 from dotenv import load_dotenv
+from .routes import routes
 import os
 
 load_dotenv()
-
-DATABASE_URI = os.getenv('DATABASE_URI')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = os.getenv['SECRET_KEY']
+    app.config['SECRET_KEY'] = SECRET_KEY
+
+    app.register_blueprint(routes)
 
     return app
