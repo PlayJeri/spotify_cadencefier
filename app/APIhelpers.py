@@ -1,6 +1,7 @@
 import requests
 import base64
 import json
+from flask import flash
   
 
 
@@ -144,7 +145,7 @@ def send_songs(token, songs, list_id):
 
     requests.post(f'https://api.spotify.com/v1/playlists/{list_id}/tracks', params=params, headers=headers)
   
-    print("LIST CREATED")
+    flash('List created. Enjoy!', 'success')
 
 
 

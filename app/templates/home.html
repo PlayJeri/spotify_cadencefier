@@ -3,18 +3,16 @@
 {% block title %}Cadencefier{% endblock %}
 
 {% block content %}
-    <div class="container text-center">
+    <div class="container text-align-center">
         <div class="row justify-content-center">
             <div class="col-5">
                 <h1>Time to cadencefy your spotify playlists!</h1>
                 <p>First we need access to your playlists in spotify. Click the button below to begin.</p>
             </div>
         </div>
-    </div>
-    <div class="container text-center">
         <div class="row justify-content-center">
             <div class="col-4">
-                    <a href="{{ url_for('routes.request_spotify_token') }}" class="btn btn-secondary">Authorize spotify</a>
+                    <a href="{{ url_for('routes.request_spotify_token') }}" class="btn btn-success">Authorize spotify</a>
             </div>
         </div>
     </div>

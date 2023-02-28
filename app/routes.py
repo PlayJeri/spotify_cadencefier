@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from urllib.parse import urlencode
 from dotenv import load_dotenv
 import json, os
@@ -81,7 +81,7 @@ def playlist():
         number_of_songs += len(song_ids)
         print(number_of_songs)
       except:
-        print("ERROR")
+        flash('Something went wrong', 'warning')
     send_songs(token, songs, list_id)
 
   return render_template('playlist.html', form=form)
