@@ -83,5 +83,6 @@ def playlist():
       except:
         flash('Something went wrong', 'warning')
     send_songs(token, songs, list_id)
+    flash(f'Tempofier found {number_of_songs} songs for your list. Enjoy!')
 
   return render_template('playlist.html', form=form)

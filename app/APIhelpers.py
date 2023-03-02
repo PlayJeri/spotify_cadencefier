@@ -145,7 +145,7 @@ def send_songs(token, songs, list_id):
 
     requests.post(f'https://api.spotify.com/v1/playlists/{list_id}/tracks', params=params, headers=headers)
   
-    flash('List created. Enjoy!', 'success')
+    #flash('List created. Enjoy!', 'success')
 
 
 
@@ -168,14 +168,17 @@ def get_song_artist(token, artist, offset, tempo):
 
     songs = []
     song_ids = []
-    for track in tracks['tracks']['items']:
-        song_ids.append(track['id'])
+    try:
+        for track in tracks['tracks']['items']:
+            song_ids.append(track['id'])
 
-    song_id_str = ','.join(song_ids)    
+        song_id_str = ','.join(song_ids)    
 
-    tempo_matched_songs = song_info(token, song_id_str, tempo)
+        tempo_matched_songs = song_info(token, song_id_str, tempo)
 
-    for song in tempo_matched_songs:    
-        songs.append(song)
+        for song in tempo_matched_songs:    
+            songs.append(song)
+    except:
+        flash('Something went wrong. Add by artist still has bugs you can try adding by genre instead', 'warning')
 
     return songs
