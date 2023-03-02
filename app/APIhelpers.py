@@ -179,6 +179,6 @@ def get_song_artist(token, artist, offset, tempo):
         for song in tempo_matched_songs:    
             songs.append(song)
     except:
-        flash('Something went wrong. Add by artist still has bugs you can try adding by genre instead', 'warning')
+        pass
 
     return songs
