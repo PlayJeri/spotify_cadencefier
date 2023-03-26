@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for, flash
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash, jsonify
 from urllib.parse import urlencode
 from dotenv import load_dotenv
 import json, os
@@ -58,7 +58,7 @@ def playlist():
     playlist_name = form.playlist_name.data
     genre = form.genre.data
     tempo = form.tempo.data
-    genre_or_artist = form.genre_or_artist.data
+    # genre_or_artist = form.genre_or_artist.data
     create_list(token, playlist_name, username)
 
     list_id = get_list_id(token, playlist_name)
@@ -67,21 +67,13 @@ def playlist():
     songs = []
     number_of_songs = 0
 
-    while offset < 500:
-    # while number_of_songs < 30:
-      print(genre_or_artist)
-      print(genre)
-      try:
-        if genre_or_artist == "Artist":
-          song_ids = get_song_artist(token, genre, offset, tempo)
-        elif genre_or_artist == "Genre":
-          song_ids = get_song(token, genre, offset, tempo)
+    # while offset < 500:
+    while number_of_songs < 30:
+        song_ids = get_song(token, genre, offset, tempo)
         songs.append(song_ids)
         offset += 50
         number_of_songs += len(song_ids)
-        print(number_of_songs)
-      except:
-        flash('Something went wrong', 'warning')
+
     send_songs(token, songs, list_id)
     flash(f'Tempofier found {number_of_songs} songs for your list. Enjoy!', 'success')
 

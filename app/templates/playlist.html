@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-<form method="POST">
+<form method="POST" style="box-shadow: 1px 1px 50px 50px green;" id="form">
     <div class="row py-2 justify-content-center">
         <div class="col-lg-3 col-md-6 col-12 text-center">
             <h1>Create playlist</h1>
@@ -16,21 +16,6 @@
             {{ form.hidden_tag() }}
             {{ form.playlist_name.label(class="form-label") }}
             {{ form.playlist_name(class="form-control bg-success-subtle border-success") }}
-        </div>
-    </div>
-    <div class="row py-2 justify-content-center">
-        <div class="col-lg-3 col-md-6 col-12 text-center">
-            {{ form.genre_or_artist.label.text }}
-        </div>
-    </div>
-    <div class="row py-2 justify-content-center">
-        <div class="col-lg-3 col-md-6 col-12 text-center">
-            {% for subfield in form.genre_or_artist %}
-            <tr>
-                <td>{{ subfield(class="form-check-input bg-success-subtle border-success", type="radio") }}</td>
-                <td>{{ subfield.label(class="form-check-label") }}</td>
-            </tr>
-            {% endfor %}
         </div>
     </div>
     <div class="row py-2 justify-content-center">
@@ -50,11 +35,26 @@
     </div>
     <div class="row py-3 justify-content-center">
         <div class="col-lg-3 col-md-6 col-12 text-center">
-            {{ form.submit(class="btn btn-success")}}
+            {{ form.submit(class="btn btn-success", id="submit-form")}}
         </div>
     </div>
 </form>
+<div class="spinner-border text-success mx-auto" role="status" id="spinner" style="display: none; position: absolute; top: 250px; left: 400px;">
+    <span class="sr-only">Tempofying...</span>
 </div>
+</div>
+<script>
+    const form = document.getElementById('form')
+    const spinner = document.getElementById('spinner')
+
+    form.addEventListener('submit', function() {
+        spinner.style.display = 'block'
+    })
+
+    window.onload = function() {
+    spinner.style.display = 'none';
+  };
+  </script>
 <script>
     function outputUpdate(value) {
         document.querySelector('#selected-tempo').value = value;
